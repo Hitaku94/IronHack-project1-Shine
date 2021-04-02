@@ -69,30 +69,29 @@ Definition of the different states and their transition (transition functions)
 ## Task
 Task definition in order of priority
 
--HTML
--CSS
--DOM
--DrawImages
--SplashScreen
--gameScreen
--Light-ball.js
-    -move : up, left, right
--walls.js
-    -move : loop
--light-ball.js
-    -collision : walls, Darkness
--walls.js
-    -collision : light-ball, left side screen
--score
--function gameOver(){}
--
+- HTML
+- CSS
+- DOM
+- DrawImages
+- SplashScreen
+- gameScreen
+- Light-ball.js
+    - move : up, left, right
+- walls.js
+    - move : loop
+- light-ball.js
+    - collision : walls, Darkness
+- walls.js
+    - collision : light-ball, left side screen
+- score
+- function gameOver(){}
 
 
 ## Additional Links
 
 
 ### Trello
-[Link url](https://trello.com)
+[Link url](https://trello.com/b/laIdgnf6/ironhack-project1-game-shine)
 
 
 ### Slides
