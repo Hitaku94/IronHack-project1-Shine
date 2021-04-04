@@ -1,0 +1,70 @@
+html {
+    height: 100%;
+
+}
+
+#myCanvas {
+    border: 1px solid black;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 1200px;
+}
+
+body {
+    font-family : Times, serif;
+    background: radial-gradient(circle at 100%, #DFEEFF, #1B2735 80%, #090A0F);
+
+    
+    
+}
+
+button {
+    border-color: #DFEEFF;
+    color: #090A0F;
+    display: block;
+    margin: 0 auto;
+    border-radius : 50px;
+    border-style: solid;
+    font-size: 25px;
+    background-color: #090A0F;
+    font-family : Times, serif;
+
+    
+}
+button:hover {
+    background-color : #DFEEFF;
+
+
+}
+
+#start {
+    width : 200px;
+    height : 50px;
+}
+
+h1 {
+    font-size: 120px;
+    text-align: center;
+    letter-spacing: 20px;
+    background: -webkit-linear-gradient(#5E6C79, #090A0F, #5E6C79);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent
+}
+
+h2 {
+    font-weight: normal;
+    font-size : 30px;
+    text-align: center;
+    color: #090A0F;
+
+ 
+}
+
+p {
+    font-size : 25px;
+    text-align: center;
+    color: #090A0F;
+}
