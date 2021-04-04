@@ -5,55 +5,87 @@ let startBtn = document.querySelector('#start');
 let restartBtn = document.querySelector('#restart');
 let splashScreen = document.querySelector('#splashScreen');
 
-let bg = new Image();
-bg.src = './Images/bg-forest.png';
-
-let light = new Image();
-light.src = './Images/000.png';
-
-let tile = new Image();
-tile.src = './Images/tile_top.png'
-
-let tileSand = new Image();
-tileSand.src = './Images/tile_sand.png'
-
-let tile2 = new Image();
-tile2.src = './Images/tile.png'
-
-let ghost = new Image();
-ghost.src = './Images/pac_man_big_100.png'
-
-let ghost1 = new Image();
-ghost1.src = './Images/pac_man_ghost.png'
 
 
+let tile = new Tile()
+let cloudImage = new Cloud()
+let lightPerson = new Light()
+let ghostPerson = new Ghost()
+let controller = new Controller()
+
+/*document.addEventListener("keydown", (event) => {
+    if (event.code == `ArrowRight`) {
+        lightPerson.moveRight()
+    }
+    if (event.code == `ArrowLeft`) {
+        lightPerson.moveLeft()
+    }
+    if (event.code == "ArrowUp") {
+        lightPerson.moveJump()
+    }
+})*/
 
 function imageDraw(){
     ctx.drawImage(bg, 0, 0)
-    ctx.drawImage(light, 360, 380)
-    ctx.drawImage(tileSand, 0, 400)
-    ctx.drawImage(tileSand, 120, 400)
-    ctx.drawImage(tileSand, 240, 400)
-    ctx.drawImage(tileSand, 360, 400)
-    ctx.drawImage(tileSand, 480, 400)
-    ctx.drawImage(ghost, 0, 285)
+    tile.drawTile()
+    cloudImage.drawCloud()
+    lightPerson.img()
+    ghostPerson.img()
+}
 
+function animation(){
+    imageDraw()
+    movement()
+    collision()
+    requestAnimationFrame(animation)
+ 
 }
 
 function start(){
     canvas.style.display = 'block';
     splashScreen.style.display = 'none';
     startBtn.style.display = 'none';
-    imageDraw()
+    
+    animation()
 }
+
+function collision(){
+    lightPerson.collisionFloor()
+}
+
+function movement(){
+    if (controller.up && lightPerson.jump == false) {
+        lightPerson.yVelocity -= 20;
+        lightPerson.jump = true;
+    }
+
+    if (controller.left == true) {
+        lightPerson.xVelocity -= 0.5;
+    }
+
+    if (controller.right == true) {
+        lightPerson.xVelocity += 0.5;
+    }
+
+    lightPerson.yVelocity += 1.5; //gravity
+    lightPerson.x += lightPerson.xVelocity;
+    lightPerson.y += lightPerson.yVelocity;
+    lightPerson.xVelocity *= 0.9; //friction
+    lightPerson.yVelocity *= 0.9; //friction
+
+}
+// event listener
+
+window.addEventListener("keydown", controller.keyListener)
+window.addEventListener("keyup", controller.keyListener)
+
+startBtn.addEventListener('click', () => {
+    start()
+})
 
 window.addEventListener('load', () => {
     canvas.style.display = 'none';
     restartBtn.style.display = 'none';
-
 })
 
-startBtn.addEventListener('click', () => {
-    start()
 
-})
