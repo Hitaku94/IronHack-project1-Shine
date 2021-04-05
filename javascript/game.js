@@ -15,9 +15,9 @@ let cloudImage = new Cloud()
 let lightPerson = new Light()
 let ghostPerson = new Ghost()
 let columnBlock = new Column()
-let scoreChrono = new Chronometer()
+let treeBg = new Tree()
 
-let score = scoreChrono.currentTime
+let score = 0
 let intervalId = 0;
 let isGameOver = false;
 let controllerBall = {
@@ -54,6 +54,13 @@ function start(){
     animation()
 }
 
+function restart(){
+    isGameOver = false;
+    
+    start()
+
+}
+
 function animation(){
     
     
@@ -79,11 +86,13 @@ function animation(){
 
 function imageDraw(){
     ctx.drawImage(bg, 0, 0)
+    treeBg.drawTree()
     columnBlock.drawColumn()
     tile.drawTile()
     cloudImage.drawCloud()
     lightPerson.img()
     ghostPerson.img()
+    
 
     ctx.font = "20px Verdana"
     ctx.fillText(`Score is ${score}`, canvas.width - 200, 50)
@@ -151,14 +160,7 @@ function movement(){
 
 }
 
-function restart(){
-    isGameOver = false;
-    restartBtn.style.display = 'none';
-    gameOverScreen.style.display = 'none';
 
-    start()
-
-}
 
 // event listener
 
@@ -168,6 +170,7 @@ startBtn.addEventListener('click', () => {
 
 restartBtn.addEventListener('click', () => {
     restart()
+    
 })
 
 window.addEventListener('load', () => {
