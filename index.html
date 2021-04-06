@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shine</title>
     <link rel="stylesheet" href="styles/style.css" />
+    <audio id="testAudio"><source src='./music/sam-maher-new-york-handpan-01.mp3'></audio>
 </head>
 <body>
     <div id="splashScreen">
@@ -16,7 +17,12 @@
     <canvas id="myCanvas" width="1000" height="500"></canvas>
 
     <div id="gameOverScreen">
-    <h2 id="finish">Well done</h2>
+    <h2 id="finish">you got caught by the darkness</h2>
+    
+    <p id="over">Your <span id="score">score</span> is :
+        <br>
+        <span id="result"></span>
+        </p>
     </div>
     <button id="restart">Restart Game</button>
 

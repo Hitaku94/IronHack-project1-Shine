@@ -1,14 +1,20 @@
 let canvas = document.querySelector('#myCanvas');
 let ctx = canvas.getContext('2d');
 
+let result = document.querySelector('#result');
 let startBtn = document.querySelector('#start');
 let restartBtn = document.querySelector('#restart');
 let splashScreen = document.querySelector('#splashScreen');
 let gameOverScreen = document.querySelector('#gameOverScreen');
 
+
 let bg = new Image();
 bg.src = './Images/bg-forest.png';
 
+let musicSplash = new Audio('./music/zelda-theme.mp3')
+let musicOver = new Audio('./music/super-smash-bros.mp3')
+let heyListen = new Audio('./music/hey_listen.mp3')
+musicSplash.volume = 0.5
 
 let tile = new Tile()
 let cloudImage = new Cloud()
@@ -16,6 +22,8 @@ let lightPerson = new Light()
 let ghostPerson = new Ghost()
 let columnBlock = new Column()
 let treeBg = new Tree()
+let arrow = new Arrow()
+let bush = new Bush()
 
 let score = 0
 let intervalId = 0;
@@ -50,13 +58,32 @@ function start(){
     canvas.style.display = 'block';
     splashScreen.style.display = 'none';
     startBtn.style.display = 'none';
+    musicSplash.pause()
+    
+    
+    
     
     animation()
 }
 
 function restart(){
     isGameOver = false;
-    
+    canvas.style.display = 'block';
+    restartBtn.style.display = 'none';
+    gameOverScreen.style.display = 'none';
+    score = 0;
+    musicOver.pause()
+
+    tile = new Tile()
+    cloudImage = new Cloud()
+    lightPerson = new Light()
+    ghostPerson = new Ghost()
+    columnBlock = new Column()
+    treeBg = new Tree()
+    arrow = new Arrow()
+    bush = new Bush()
+    musicOver = new Audio('./music/super-smash-bros.mp3')
+
     start()
 
 }
@@ -72,9 +99,11 @@ function animation(){
     
     if (isGameOver) {
         cancelAnimationFrame(intervalId)
+        result.innerText = score
         canvas.style.display = 'none'
         restartBtn.style.display = 'block'
         gameOverScreen.style.display = 'block';
+        musicOver.play()
     }
     else {
         intervalId = requestAnimationFrame(animation)
@@ -87,11 +116,14 @@ function animation(){
 function imageDraw(){
     ctx.drawImage(bg, 0, 0)
     treeBg.drawTree()
+    bush.drawBush()
+    arrow.drawArrow()
     columnBlock.drawColumn()
     tile.drawTile()
     cloudImage.drawCloud()
     lightPerson.img()
     ghostPerson.img()
+    
     
 
     ctx.font = "20px Verdana"
@@ -124,6 +156,31 @@ function collision(){
         }
     }
     
+    if (lightPerson.x + light.width >= columnBlock.column1.x && lightPerson.y + light.height >= columnBlock.column1.y &&
+        lightPerson.x < columnBlock.column1.x + column.width && lightPerson.y <= columnBlock.column1.y + column.height ) {
+       lightPerson.x += columnBlock.speed
+       controllerBall.right = false;
+    }   
+
+    if (lightPerson.y + light.height >= columnBlock.column1.y && lightPerson.x + light.width <= columnBlock.column1.x + column.width + 7 &&
+        lightPerson.x >= columnBlock.column1.x - 10 && lightPerson.y + light.height < columnBlock.column1.y + 50 ) {
+           lightPerson.y = columnBlock.column1.y - light.height
+           lightPerson.yVelocity = 0
+           lightPerson.xVelocity = 0
+           lightPerson.jump = false
+     }
+
+    if (lightPerson.y < columnBlock.column1.y + column.height && lightPerson.x + light.width <= columnBlock.column1.x + column.width + 7 &&
+        lightPerson.x >= columnBlock.column1.x - 10 && lightPerson.y > columnBlock.column1.y + 50) {
+            lightPerson.y = columnBlock.column1.y + column.height
+            lightPerson.yVelocity += 10;
+            lightPerson.jump = true
+        }
+    
+    if (columnBlock.column1.x + column.width == ghostPerson.x + ghost.width) {
+           score += 1
+    }
+
     if (lightPerson.x <= ghostPerson.x + ghost.width - light.width && lightPerson.y >= ghostPerson.y) {
         isGameOver = true;
     }
@@ -166,6 +223,7 @@ function movement(){
 
 startBtn.addEventListener('click', () => {
     start()
+    heyListen.play()
 })
 
 restartBtn.addEventListener('click', () => {
@@ -177,6 +235,8 @@ window.addEventListener('load', () => {
     canvas.style.display = 'none';
     restartBtn.style.display = 'none';
     gameOverScreen.style.display = 'none';
+    musicSplash.play()
 })
+
 
 
