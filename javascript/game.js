@@ -1,15 +1,25 @@
 let canvas = document.querySelector('#myCanvas');
 let ctx = canvas.getContext('2d');
 
+
 let result = document.querySelector('#result');
 let startBtn = document.querySelector('#start');
 let restartBtn = document.querySelector('#restart');
+let playmutebtn = document.querySelector('#playmutebtn')
 let splashScreen = document.querySelector('#splashScreen');
 let gameOverScreen = document.querySelector('#gameOverScreen');
 
 
 let bg = new Image();
 bg.src = './Images/bg-forest.png';
+
+// SOUNDS PLACES
+
+let audioOff = new Image()
+audioOff.src = './Images/audioOff.png'
+let audioOn = new Image()
+audioOn.src = './Images/audioOn.png'
+
 
 let musicSplash = new Audio('./music/zelda-theme.mp3')
 let musicOver = new Audio('./music/super-smash-bros.mp3')
@@ -53,6 +63,7 @@ let controllerBall = {
     
     }
 };
+
 
 function start(){
     canvas.style.display = 'block';
@@ -123,6 +134,7 @@ function imageDraw(){
     cloudImage.drawCloud()
     lightPerson.img()
     ghostPerson.img()
+    
     
     
 
@@ -217,9 +229,23 @@ function movement(){
 
 }
 
-
+function playMute(){
+    if(musicSplash.muted) {
+        musicSplash.muted = false;
+        musicOver.muted = false;
+        playmutebtn.style.background = "url(Images/audioOn.png) no-repeat";
+    } else {
+        musicSplash.muted = true;
+        musicOver.muted = true;
+        playmutebtn.style.background = "url(Images/audioOff.png) no-repeat";
+    }
+}
 
 // event listener
+
+playmutebtn.addEventListener('click', () => {
+    playMute()
+})
 
 startBtn.addEventListener('click', () => {
     start()

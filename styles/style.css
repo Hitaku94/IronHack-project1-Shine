@@ -21,6 +21,16 @@ body {
     
 }
 
+#playmutebtn {
+    background:url(/Images/audioOn.png) no-repeat;
+    border:none;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    border-style: none;
+    
+}
+
 button {
     border-color: #DFEEFF;
     color: #090A0F;
@@ -31,6 +41,8 @@ button {
     font-size: 25px;
     background-color: #090A0F;
     font-family : Times, serif;
+    outline: none;
+    cursor: pointer;
 
     
 }
@@ -57,7 +69,8 @@ h1 {
     letter-spacing: 20px;
     background: -webkit-linear-gradient(#5E6C79, #090A0F, #5E6C79);
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent
+    -webkit-text-fill-color: transparent;
+    margin-top: 20px;
 }
 
 h2 {
