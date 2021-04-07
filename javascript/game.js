@@ -98,14 +98,41 @@ let controllerBall = {
     }
 };
 
-
-
-function start(){
+function tutorial(){
     canvas.style.display = 'block';
     splashScreen.style.display = 'none';
     startBtn.style.display = 'none';
     marioAudio.style.display = 'block'
     musicSplash.pause()
+    
+    imageDraw()
+    ctx.drawImage(tuto, 425, 50)
+    ctx.drawImage(tuto, 335, 200)
+    ctx.drawImage(tuto, 515, 200)
+    ctx.drawImage(iconUp, 475, 110)
+    ctx.drawImage(iconLeft, 385, 260)
+    ctx.drawImage(iconRight, 570, 260)
+
+    ctx.font = "bold 25px Times"
+    ctx.fillText("Jump", 470, 100)
+    ctx.fillText("Left", 390, 250)
+    ctx.fillText("Right", 565, 250)
+    ctx.fillText("Press left, down or up to start", 350, 25)
+    let toggle = false;
+    let toggle1 = false;
+    document.addEventListener('keydown', (event) => {
+       
+        if (event.code == 'ArrowUp' || event.code == 'ArrowLeft' || event.code == 'ArrowRight')
+            if (!toggle && !toggle1) {
+                start()
+                toggle1 = true;
+            }
+    })
+    
+}
+
+function start(){
+
     handPan.play()
     
     animation()
@@ -203,21 +230,6 @@ function imageDraw(){
     
 }
 
-function tutorial(){
-    
-    ctx.drawImage(tuto, 425, 50)
-    ctx.drawImage(tuto, 335, 200)
-    ctx.drawImage(tuto, 515, 200)
-    ctx.drawImage(iconUp, 475, 110)
-    ctx.drawImage(iconLeft, 385, 260)
-    ctx.drawImage(iconRight, 570, 260)
-
-    ctx.font = "bold 25px Times"
-    ctx.fillText("Jump", 470, 100)
-    ctx.fillText("Left", 390, 250)
-    ctx.fillText("Right", 565, 250)
-}
-
 function collision(){ 
     lightPerson.collision()
 
@@ -313,6 +325,7 @@ function collision(){
 
 }
 
+//Movement function
 function movement(){
 
     
@@ -358,10 +371,12 @@ function canvasMovement(){
         bush.bush1.x += bush.speed
         bush.bush2.x += bush.speed
         bush.bush3.x += bush.speed
-        //ghostPerson.x -= 4.5
+        //tile.x += tile.speed;
+        ghostPerson.x -= 6.5
     }
 }
 
+//Board score function
 function checkHighScore(score){
     let highScores = JSON.parse(highScoreString);
     let lowestScore = highScores[N_ofHighScore - 1]?.score ?? 0;
@@ -391,6 +406,7 @@ function showHighScore(){
     .join('');
 }
 
+//Music
 function playMute(){
     if(musicSplash.muted) {
         musicSplash.muted = false;
@@ -409,6 +425,19 @@ function playMute(){
 // event listener
 
 
+startBtn.addEventListener('click', () => {
+    tutorial()
+    heyListen.play()
+})
+
+restartBtn.addEventListener('click', () => {
+    restart()
+    
+})
+
+playmutebtn.addEventListener('click', () => {
+    playMute()
+})
 
 document.addEventListener("keydown", (event) => {
     let toggle = false;
@@ -428,19 +457,6 @@ document.addEventListener("keydown", (event) => {
     }
 })
 
-playmutebtn.addEventListener('click', () => {
-    playMute()
-})
-
-startBtn.addEventListener('click', () => {
-    start()
-    //heyListen.play()
-})
-
-restartBtn.addEventListener('click', () => {
-    restart()
-    
-})
 
 window.addEventListener('load', () => {
     canvas.style.display = 'none';

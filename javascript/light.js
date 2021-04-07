@@ -4,7 +4,7 @@ light.src = './Images/000.png';
 
 class Light {
     constructor() {
-        this.x = 360
+        this.x = 310
         this.y = 200
         this.jump = false
         this.height = 22

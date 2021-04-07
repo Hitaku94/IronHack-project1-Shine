@@ -7,7 +7,7 @@ class Ghost {
     constructor() {
         this.x = 0
         this.y = 285;
-        this.speed = 4
+        this.speed = 6
     }
     img() {
         ctx.drawImage(ghost, this.x, this.y)

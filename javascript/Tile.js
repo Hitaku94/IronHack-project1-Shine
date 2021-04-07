@@ -18,6 +18,7 @@ class Tile {
         this.x = 0;
         this.y = 400;
         this.tile = 9;
+        //this.speed = -7
     }
     drawTile() {
         for (let i = 0; i <= this.tile; i++) {
