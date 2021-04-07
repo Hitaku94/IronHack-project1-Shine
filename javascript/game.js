@@ -31,16 +31,19 @@ let heyListen = new Audio('./music/hey_listen.mp3')
 let handPan = new Audio('./music/a-fast-handpan.mp3')
 let mario = new Audio(marioPlaylist[Math.floor(Math.random() * marioPlaylist.length)])
 
+handPan.playbackRate = 1.2;
+mario.playbackRate = 1.2;
 musicSplash.volume = 0.1;
 musicSplash.loop = true;
 musicOver.volume = 0.1;
 musicOver.loop = true;
-handPan.volume = 0.4;
+handPan.volume = 0.3;
 handPan.loop = true;
-mario.volume = 0.4;
+mario.volume = 0.3;
 mario.loop = true;
-mario.playbackRate = 1.5
 
+
+// object from classes
 
 let tile = new Tile()
 let cloudImage = new Cloud()
@@ -50,6 +53,12 @@ let columnBlock = new Column()
 let treeBg = new Tree()
 let arrow = new Arrow()
 let bush = new Bush()
+
+//Variable Call 
+
+let N_ofHighScore = 5;
+let highScr = 'highScores';
+let highScoreString = localStorage.getItem(highScr);
 
 let score = 0
 let intervalId = 0;
@@ -89,11 +98,8 @@ function start(){
     musicSplash.pause()
     handPan.play()
     
-    
-    
-    
-    
     animation()
+
 }
 
 function restart(){
@@ -104,6 +110,7 @@ function restart(){
     score = 0;
     musicOver.pause()
 
+// class reset
     tile = new Tile()
     cloudImage = new Cloud()
     lightPerson = new Light()
@@ -116,6 +123,18 @@ function restart(){
     handPan = new Audio('./music/a-fast-handpan.mp3')
     mario = new Audio(marioPlaylist[Math.floor(Math.random() * marioPlaylist.length)])
 
+// music reset
+    handPan.playbackRate = 1.2;
+    mario.playbackRate = 1.2;
+    musicSplash.volume = 0.1;
+    musicSplash.loop = true;
+    musicOver.volume = 0.1;
+    musicOver.loop = true;
+    handPan.volume = 0.2;
+    handPan.loop = true;
+    mario.volume = 0.2;
+    mario.loop = true;
+
     start()
 
 }
@@ -126,9 +145,15 @@ function animation(){
     movement()
     collision()
     imageDraw()
+    canvasMovement()
+
+// addEventListener for controller
+
     window.addEventListener("keydown", controllerBall.keyListener);
     window.addEventListener("keyup", controllerBall.keyListener);
     
+// game Over 
+
     if (isGameOver) {
         cancelAnimationFrame(intervalId)
         result.innerText = score
@@ -143,9 +168,7 @@ function animation(){
     else {
         intervalId = requestAnimationFrame(animation)
     }
-    
 
- 
 }
 
 function imageDraw(){
@@ -160,68 +183,106 @@ function imageDraw(){
     lightPerson.img()
     ghostPerson.img()
     
-    
-    
+//score text
 
     ctx.font = "20px Verdana"
     ctx.fillText(`Score is ${score}`, canvas.width - 200, 50)
     
 }
 
-function collision(){
+function collision(){ 
     lightPerson.collision()
+
+// Collision with the columns
 
     for (let i = 0; i < columnBlock.column.length ; i++) {
 
-    
-        if (lightPerson.x + light.width >= columnBlock.column[i].x && lightPerson.y + light.height >= columnBlock.column[i].y &&
-         lightPerson.x < columnBlock.column[i].x + column.width) {
-        lightPerson.x += columnBlock.speed
-        controllerBall.right = false;
+    //collision left side
+        if (lightPerson.x + light.width >= columnBlock.column[i].x && lightPerson.y + light.height >= columnBlock.column[i].y + 10 &&
+            lightPerson.x < columnBlock.column[i].x + column.width/2 - 10) {
+
+        lightPerson.x = columnBlock.column[i].x - light.width
+       
         }   
 
-        if (lightPerson.y + light.height >= columnBlock.column[i].y && lightPerson.x + light.width <= columnBlock.column[i].x + column.width + 15 &&
-         lightPerson.x >= columnBlock.column[i].x - 10) {
+    //collision right side
+        if (lightPerson.x >= columnBlock.column[i].x && lightPerson.y + light.height >= columnBlock.column[i].y + 10 &&
+            lightPerson.x <= columnBlock.column[i].x + column.width) {
+   
+           lightPerson.x = columnBlock.column[i].x + column.width
+   
+           }
+
+    //collision top side
+        if (lightPerson.y + light.height > columnBlock.column[i].y && lightPerson.y + light.height < columnBlock.column[i].y + 10 && lightPerson.x + light.width <= columnBlock.column[i].x + column.width + 15 &&
+         lightPerson.x >= columnBlock.column[i].x - 15) {
+
             lightPerson.y = columnBlock.column[i].y - light.height
             lightPerson.yVelocity = 0
             //lightPerson.xVelocity = 0
             lightPerson.jump = false
+
         }
 
-        if (columnBlock.column[i].x + column.width == ghostPerson.x + ghost.width) {
+//score point
+        if (columnBlock.column[i].x + column.width <= 0) {
             score += 1
         }
     }
-    
-    if (lightPerson.x + light.width >= columnBlock.column1.x && lightPerson.y + light.height >= columnBlock.column1.y &&
-        lightPerson.x < columnBlock.column1.x + column.width && lightPerson.y <= columnBlock.column1.y + column.height ) {
-       lightPerson.x += columnBlock.speed
-       controllerBall.right = false;
+
+    // collision right side
+    if (lightPerson.x >= columnBlock.column1.x && lightPerson.y + light.height >= columnBlock.column1.y + 10 &&
+        lightPerson.x <= columnBlock.column1.x + column.width && lightPerson.y <= columnBlock.column1.y + column.height - 20) {
+            console.log("hello left")
+       lightPerson.x = columnBlock.column1.x + column.width
+       
     }   
 
-    if (lightPerson.y + light.height >= columnBlock.column1.y && lightPerson.x + light.width <= columnBlock.column1.x + column.width + 7 &&
-        lightPerson.x >= columnBlock.column1.x - 10 && lightPerson.y + light.height < columnBlock.column1.y + 50 ) {
+    // collision left side
+    if (lightPerson.x + light.width >= columnBlock.column1.x && lightPerson.y + light.height >= columnBlock.column1.y + 10 &&
+        lightPerson.x < columnBlock.column1.x + column.width/2 - 10 && lightPerson.y <= columnBlock.column1.y + column.height - 20 ) {
+            console.log("hello right")
+       lightPerson.x = columnBlock.column1.x - light.width
+       
+    }   
+    // collision up
+    if (lightPerson.y + light.height >= columnBlock.column1.y && lightPerson.x + light.width <= columnBlock.column1.x + column.width + 10 &&
+        lightPerson.x >= columnBlock.column1.x - 20 && lightPerson.y + light.height <= columnBlock.column1.y + 20) {
+
+            
            lightPerson.y = columnBlock.column1.y - light.height
            lightPerson.yVelocity = 0
            //lightPerson.xVelocity = 0
            lightPerson.jump = false
+           
      }
 
-    if (lightPerson.y < columnBlock.column1.y + column.height && lightPerson.x + light.width <= columnBlock.column1.x + column.width + 7 &&
-        lightPerson.x >= columnBlock.column1.x - 10 && lightPerson.y > columnBlock.column1.y + 50) {
+    // collision bottom
+    if (lightPerson.y <= columnBlock.column1.y + column.height && lightPerson.x + light.width <= columnBlock.column1.x + column.width + 10 &&
+        lightPerson.x >= columnBlock.column1.x - 20 && lightPerson.y + light.height >= columnBlock.column1.y + column.height - 20) {
+            console.log("hello bottom")
             lightPerson.y = columnBlock.column1.y + column.height
             lightPerson.yVelocity += 10;
             lightPerson.jump = true
         }
-    
-    if (columnBlock.column1.x + column.width == ghostPerson.x + ghost.width) {
+
+// score point
+    if (columnBlock.column1.x + column.width <= 0) {
            score += 1
     }
 
-    if (lightPerson.x <= ghostPerson.x + ghost.width - light.width && lightPerson.y >= ghostPerson.y) {
+// collision ball with canvas right side  
+    if (lightPerson.x >= 610) {
+        lightPerson.x = 610
+    }   
+
+// collision ghost
+    if (lightPerson.x <= ghostPerson.x + ghost.width - light.width) {
         isGameOver = true;
     }
         
+
+
 }
 
 function movement(){
@@ -252,6 +313,54 @@ function movement(){
     lightPerson.xVelocity *= 0.9; //friction
     lightPerson.yVelocity *= 0.9; //friction 
 
+}
+
+function canvasMovement(){
+    if (lightPerson.x >= 610 && controllerBall.right) {
+        for (let i = 0; i < columnBlock.column.length; i++) {
+            columnBlock.column[i].x += columnBlock.speed
+        }
+        columnBlock.column1.x += columnBlock.speed
+        treeBg.tree.x += treeBg.speed
+        treeBg.tree1.x += treeBg.speed
+        treeBg.tree2.x += treeBg.speed
+        treeBg.tree3.x += treeBg.speed
+        arrow.x += arrow.speed
+        bush.bush.x += bush.speed
+        bush.bush1.x += bush.speed
+        bush.bush2.x += bush.speed
+        bush.bush3.x += bush.speed
+        ghostPerson.x -= 4.5
+    }
+}
+
+function checkHighScore(score){
+    let highScores = JSON.parse(highScoreString);
+    let lowestScore = highScores[N_ofHighScore - 1]?.score ?? 0;
+
+    if (score > lowestScore) {
+        saveHighScore()
+        showHighScore()
+    }
+}
+
+function saveHighScore(score, highScores){
+    let name = prompt("Well done you entered the highScore board ! Enter name:");
+    let newScore = { score, name };
+
+    highScores.push(newScore);
+    highScores.sort((a, b) => b.score - a.score);
+    highScores.splice(N_ofHighScore);
+    localStorage.setItem(highScr, JSON.stringify(highScores));
+}
+
+function showHighScore(){
+    let highScores = JSON.parse(localStorage.getItem(highScr)) || [];
+    let highScoreList = document.getElementById(highScr);
+
+    highScoreList.innerHTML = highScores
+    .map((score) => `<li>${score.score} - ${score.name}`)
+    .join('');
 }
 
 function playMute(){
@@ -297,7 +406,7 @@ playmutebtn.addEventListener('click', () => {
 
 startBtn.addEventListener('click', () => {
     start()
-    heyListen.play()
+    //heyListen.play()
 })
 
 restartBtn.addEventListener('click', () => {

@@ -46,17 +46,17 @@ class Tree {
             x:1300,
             y:canvas.height - tree1.height - 90
         }
-        this.speed = -2
+        this.speed = -7
     }
     drawTree(){
         ctx.drawImage(tree, this.tree.x, this.tree.y)
         ctx.drawImage(tree1, this.tree1.x, this.tree1.y)
         ctx.drawImage(tree, this.tree2.x, this.tree2.y)
         ctx.drawImage(tree1, this.tree3.x, this.tree3.y)
-        this.tree.x += this.speed
+        /*this.tree.x += this.speed
         this.tree1.x += this.speed
         this.tree2.x += this.speed
-        this.tree3.x += this.speed
+        this.tree3.x += this.speed*/
 
         if (this.tree.x < -tree.width) {
             this.tree = { 
@@ -92,11 +92,11 @@ class Arrow {
     constructor(){
         this.x = 600
         this.y = canvas.height - arrowRight.height - 95
-        this.speed = -2
+        this.speed = -7
     }
     drawArrow(){
         ctx.drawImage(arrowRight, this.x, this.y)
-        this.x += this.speed
+        //this.x += this.speed
 
         if (this.x < - arrowRight.width) {
             this.x = Math.floor(Math.random() * canvas.width + 3000)
@@ -124,17 +124,17 @@ class Bush {
             x: 300,
             y: canvas.height - tree.height + 90
         }
-        this.speed = -2
+        this.speed = -7
     }
     drawBush(){
         ctx.drawImage(tree, this.bush.x, this.bush.y)
         ctx.drawImage(tree, this.bush1.x, this.bush1.y)
         ctx.drawImage(tree, this.bush2.x, this.bush2.y)
         ctx.drawImage(tree, this.bush3.x, this.bush3.y)
-        this.bush.x += this.speed
+        /*this.bush.x += this.speed
         this.bush1.x += this.speed
         this.bush2.x += this.speed
-        this.bush3.x += this.speed
+        this.bush3.x += this.speed*/
 
         if (this.bush.x < - tree.width) {
             this.bush.x = Math.floor(Math.random() * canvas.width + 1500)

@@ -18,23 +18,23 @@ class Column {
             x: 800,
             y: 200
         }
-        this.speed = -5
+        this.speed = -7
         
     }
     drawColumn() {
         ctx.drawImage(column, this.column1.x, this.column1.y)
-        this.column1.x += this.speed
+        //this.column1.x += this.speed
         
         if (this.column1.x < -column.width) {
             this.column1 = {
                 x: Math.floor(Math.random() * canvas.width + 2000),
-                y: 240
+                y: 200
             }
         }
 
         for (let i = 0; i < this.column.length; i++) {
             ctx.drawImage(column, this.column[i].x, this.column[i].y)
-            this.column[i].x += this.speed
+            //this.column[i].x += this.speed
 
             if (this.column[i].x < -column.width) {
                 this.column[i] = { 
