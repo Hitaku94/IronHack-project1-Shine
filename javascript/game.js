@@ -14,6 +14,15 @@ let gameOverScreen = document.querySelector('#gameOverScreen');
 
 let bg = new Image();
 bg.src = './Images/bg-forest.png';
+let tuto = new Image();
+tuto.src = './Images/tutoPlateform.png';
+let iconRight = new Image();
+iconRight.src = './Images/arrowRightIcon.png';
+let iconLeft = new Image();
+iconLeft.src = './Images/arrowLeft.png';
+let iconUp = new Image();
+iconUp.src = './Images/arrowUp.png';
+
 
 // SOUNDS PLACES
 
@@ -88,6 +97,7 @@ let controllerBall = {
     
     }
 };
+
 
 
 function start(){
@@ -182,12 +192,30 @@ function imageDraw(){
     cloudImage.drawCloud()
     lightPerson.img()
     ghostPerson.img()
+
+
+
     
 //score text
 
-    ctx.font = "20px Verdana"
+    ctx.font = "20px Times"
     ctx.fillText(`Score is ${score}`, canvas.width - 200, 50)
     
+}
+
+function tutorial(){
+    
+    ctx.drawImage(tuto, 425, 50)
+    ctx.drawImage(tuto, 335, 200)
+    ctx.drawImage(tuto, 515, 200)
+    ctx.drawImage(iconUp, 475, 110)
+    ctx.drawImage(iconLeft, 385, 260)
+    ctx.drawImage(iconRight, 570, 260)
+
+    ctx.font = "bold 25px Times"
+    ctx.fillText("Jump", 470, 100)
+    ctx.fillText("Left", 390, 250)
+    ctx.fillText("Right", 565, 250)
 }
 
 function collision(){ 
@@ -330,7 +358,7 @@ function canvasMovement(){
         bush.bush1.x += bush.speed
         bush.bush2.x += bush.speed
         bush.bush3.x += bush.speed
-        ghostPerson.x -= 4.5
+        //ghostPerson.x -= 4.5
     }
 }
 
