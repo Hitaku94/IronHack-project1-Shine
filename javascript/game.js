@@ -5,9 +5,11 @@ let ctx = canvas.getContext('2d');
 let result = document.querySelector('#result');
 let startBtn = document.querySelector('#start');
 let restartBtn = document.querySelector('#restart');
+let marioAudio = document.querySelector('#marioAudio');
 let playmutebtn = document.querySelector('#playmutebtn')
 let splashScreen = document.querySelector('#splashScreen');
 let gameOverScreen = document.querySelector('#gameOverScreen');
+
 
 
 let bg = new Image();
@@ -20,11 +22,25 @@ audioOff.src = './Images/audioOff.png'
 let audioOn = new Image()
 audioOn.src = './Images/audioOn.png'
 
+let marioPlaylist = ['./music/mario-odyssey.mp3', './music/remix-super-mario-sunshine.mp3', './music/super-mario-bros-2.mp3',
+ './music/super-mario-world-athletic.mp3']
 
 let musicSplash = new Audio('./music/zelda-theme.mp3')
 let musicOver = new Audio('./music/super-smash-bros.mp3')
 let heyListen = new Audio('./music/hey_listen.mp3')
-musicSplash.volume = 0.5
+let handPan = new Audio('./music/a-fast-handpan.mp3')
+let mario = new Audio(marioPlaylist[Math.floor(Math.random() * marioPlaylist.length)])
+
+musicSplash.volume = 0.1;
+musicSplash.loop = true;
+musicOver.volume = 0.1;
+musicOver.loop = true;
+handPan.volume = 0.4;
+handPan.loop = true;
+mario.volume = 0.4;
+mario.loop = true;
+mario.playbackRate = 1.5
+
 
 let tile = new Tile()
 let cloudImage = new Cloud()
@@ -69,7 +85,10 @@ function start(){
     canvas.style.display = 'block';
     splashScreen.style.display = 'none';
     startBtn.style.display = 'none';
+    marioAudio.style.display = 'block'
     musicSplash.pause()
+    handPan.play()
+    
     
     
     
@@ -94,6 +113,8 @@ function restart(){
     arrow = new Arrow()
     bush = new Bush()
     musicOver = new Audio('./music/super-smash-bros.mp3')
+    handPan = new Audio('./music/a-fast-handpan.mp3')
+    mario = new Audio(marioPlaylist[Math.floor(Math.random() * marioPlaylist.length)])
 
     start()
 
@@ -114,7 +135,10 @@ function animation(){
         canvas.style.display = 'none'
         restartBtn.style.display = 'block'
         gameOverScreen.style.display = 'block';
+        marioAudio.style.display = 'none'
         musicOver.play()
+        handPan.pause()
+        mario.pause()
     }
     else {
         intervalId = requestAnimationFrame(animation)
@@ -125,6 +149,7 @@ function animation(){
 }
 
 function imageDraw(){
+
     ctx.drawImage(bg, 0, 0)
     treeBg.drawTree()
     bush.drawBush()
@@ -159,7 +184,7 @@ function collision(){
          lightPerson.x >= columnBlock.column[i].x - 10) {
             lightPerson.y = columnBlock.column[i].y - light.height
             lightPerson.yVelocity = 0
-            lightPerson.xVelocity = 0
+            //lightPerson.xVelocity = 0
             lightPerson.jump = false
         }
 
@@ -178,7 +203,7 @@ function collision(){
         lightPerson.x >= columnBlock.column1.x - 10 && lightPerson.y + light.height < columnBlock.column1.y + 50 ) {
            lightPerson.y = columnBlock.column1.y - light.height
            lightPerson.yVelocity = 0
-           lightPerson.xVelocity = 0
+           //lightPerson.xVelocity = 0
            lightPerson.jump = false
      }
 
@@ -233,15 +258,38 @@ function playMute(){
     if(musicSplash.muted) {
         musicSplash.muted = false;
         musicOver.muted = false;
+        handPan.muted = false;
+        mario.muted = false;
         playmutebtn.style.background = "url(Images/audioOn.png) no-repeat";
     } else {
         musicSplash.muted = true;
         musicOver.muted = true;
+        handPan.muted = true;
+        mario.muted = true;
         playmutebtn.style.background = "url(Images/audioOff.png) no-repeat";
     }
 }
-
 // event listener
+
+
+
+document.addEventListener("keydown", (event) => {
+    let toggle = false;
+    if (event.code == 'Space') {
+        if (!handPan.paused && !toggle) {
+            handPan.pause();
+            mario.play();
+            toggle = true;
+        }
+        if (!mario.paused && !toggle) {
+            mario.pause();
+            handPan.play();
+            toggle = true;
+            
+        }
+
+    }
+})
 
 playmutebtn.addEventListener('click', () => {
     playMute()
@@ -261,6 +309,7 @@ window.addEventListener('load', () => {
     canvas.style.display = 'none';
     restartBtn.style.display = 'none';
     gameOverScreen.style.display = 'none';
+    marioAudio.style.display = 'none'
     musicSplash.play()
 })
 
