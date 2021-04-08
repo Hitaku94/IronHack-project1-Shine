@@ -61,18 +61,18 @@ class Column {
             for (let j = 0; j < this.column1.length; j++) {
                 
                 ctx.drawImage(column, this.column1[j].x, this.column1[j].y)
-                if (this.loop > 100) {
+                if (this.loop > 50) {
                 if (this.column1[j].x < -column.width) {
                     this.column1[j] = {
                         x: Math.floor(Math.random() * canvas.width + 2000),
-                        y: 100
+                        y: 220
                     }
                     this.loop += 1
                 }
             }
         }
 
-        if (this.loop > 200)
+        if (this.loop > 100)
         for (let k = 0; k < this.plateform.length; k++) {
             ctx.drawImage(bridge, this.plateform[k].x, this.plateform[k].y)
             

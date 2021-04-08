@@ -271,7 +271,7 @@ function collision() {
 
             onPlateform = true;
             lightPerson.y = columnBlock.column[i].y - light.height
-            console.log("up")
+           
             lightPerson.yVelocity = 0
             //lightPerson.xVelocity = 0
             lightPerson.jump = false
@@ -281,18 +281,18 @@ function collision() {
         // collision bottom
         if (lightPerson.y <= columnBlock.column[i].y + column.height && lightPerson.x + light.width <= columnBlock.column[i].x + column.width + 10 &&
             lightPerson.x >= columnBlock.column[i].x - 20 && lightPerson.y + light.height >= columnBlock.column[i].y + column.height - 20) {
-            console.log("hello bottom")
+            
             lightPerson.y = columnBlock.column[i].y + column.height
             lightPerson.yVelocity += 10;
             lightPerson.jump = true
         }
 
         //score point
-        if (columnBlock.column[i].x + column.width <= 0) {
+        /*if (columnBlock.column[i].x + column.width <= 0) {
             score += 1
-        }
+        }*/
     }
-    if (columnBlock.loop > 100) {
+    if (columnBlock.loop > 50) {
         for (let j = 0; j < columnBlock.column1.length; j++) {
             // collision right side
             if (lightPerson.x >= columnBlock.column1[j].x && lightPerson.y + light.height >= columnBlock.column1[j].y + 10 &&
@@ -329,20 +329,20 @@ function collision() {
             // collision bottom
             if (lightPerson.y <= columnBlock.column1[j].y + column.height && lightPerson.x + light.width <= columnBlock.column1[j].x + column.width + 10 &&
                 lightPerson.x >= columnBlock.column1[j].x - 20 && lightPerson.y + light.height >= columnBlock.column1[j].y + column.height - 20) {
-                console.log("hello bottom")
+               
                 lightPerson.y = columnBlock.column1[j].y + column.height
                 lightPerson.yVelocity += 10;
                 lightPerson.jump = true
             }
 
             // score point
-            if (columnBlock.column1[j].x + column.width <= 0) {
+            /*if (columnBlock.column1[j].x + column.width <= 0) {
                 score += 1
-            }
+            }*/
         }
     }
     // collision plateform
-    if (columnBlock.loop > 200) {
+    if (columnBlock.loop > 100) {
         for (let k = 0; k < columnBlock.plateform.length; k++) {
             // collision right side
             if (lightPerson.x >= columnBlock.plateform[k].x && lightPerson.y + light.height >= columnBlock.plateform[k].y + 10 &&
@@ -388,6 +388,7 @@ function collision() {
     // collision ball with canvas right side  
     if (lightPerson.x >= 610) {
         lightPerson.x = 610
+        score += 1
     }
 
     // collision ghost
@@ -456,7 +457,7 @@ function canvasMovement() {
         bush.bush2.x += bush.speed
         bush.bush3.x += bush.speed
         //tile.x += tile.speed;
-        //ghostPerson.x -= 6.5
+        ghostPerson.x -= 7
 
     }
 }
