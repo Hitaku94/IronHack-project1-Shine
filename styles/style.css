@@ -47,7 +47,7 @@ button {
     border-color: #DFEEFF;
     color: #090A0F;
     display: block;
-    margin: 0 auto;
+    margin: 25px auto 0 auto;
     border-radius : 50px;
     border-style: solid;
     font-size: 25px;
@@ -75,9 +75,13 @@ button:hover {
   
 }
 
-h1 {
-    font-size: 120px;
+#splashScreen {
     text-align: center;
+}
+
+h1 {
+
+    font-size: 120px;
     letter-spacing: 20px;
     background: -webkit-linear-gradient(#5E6C79, #090A0F, #5E6C79);
     -webkit-background-clip: text;
@@ -86,12 +90,11 @@ h1 {
 }
 
 h2 {
+
     font-weight: normal;
     font-size : 30px;
-    text-align: center;
     color: #090A0F;
 
- 
 }
 
 p {
@@ -122,4 +125,23 @@ span{
 
 #score{
     color:#DFEEFF;
+}
+
+#name {
+    
+    background-color: #DFEEFF;
+  border-radius : 10px;
+  border: none;
+  border-style:none;
+  box-shadow: #5E6C79;
+  height: 25px;
+  width: 200px;
+  outline: none;
+
+  
+}
+
+input::placeholder {
+    text-align: center;
+    color: #5E6C79;
 }

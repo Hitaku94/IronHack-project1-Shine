@@ -1,5 +1,5 @@
 # Project's name
-[Link Deploy](https://github.com/Hitaku94/IronHack-project1-Shine)
+[Link Deploy](https://hitaku94.github.io/IronHack-project1-Shine/)
 
 
 ## Description
@@ -95,4 +95,4 @@ Task definition in order of priority
 
 
 ### Slides
-[Link Slides.com](http://slides.com)
+[Link Slides.com](https://www.canva.com/design/DAEa_ovXLPQ/D5Rwh89_c-DlJmfeo9_74Q/edit#)

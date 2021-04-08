@@ -1,7 +1,7 @@
 let canvas = document.querySelector('#myCanvas');
 let ctx = canvas.getContext('2d');
 
-
+let userName = document.querySelector('input')
 let result = document.querySelector('#result');
 let startBtn = document.querySelector('#start');
 let restartBtn = document.querySelector('#restart');
@@ -10,7 +10,7 @@ let playmutebtn = document.querySelector('#playmutebtn')
 let splashScreen = document.querySelector('#splashScreen');
 let gameOverScreen = document.querySelector('#gameOverScreen');
 
-
+console.log(userName.value)
 
 let bg = new Image();
 bg.src = './Images/bg-forest.png';
@@ -65,9 +65,9 @@ let bush = new Bush()
 
 //Variable Call 
 
-let N_ofHighScore = 5;
-let highScoreString = localStorage.getItem("highScores");
-//let mostRecentScore = localStorage.getItem('mostRecentScore')
+
+
+
 
 let onPlateform = false;
 let score = 0
@@ -134,10 +134,11 @@ function tutorial() {
 
 function start() {
 
-    //handPan.play()
-
+    handPan.play()
+   
     animation()
-
+    
+    
 }
 
 function restart() {
@@ -178,7 +179,7 @@ function restart() {
 }
 
 function animation() {
-
+    
 
     movement()
     collision()
@@ -202,7 +203,8 @@ function animation() {
         musicOver.play()
         handPan.pause()
         mario.pause()
-        checkHighScore()
+        getHighScore(userName.value, score)
+        
     }
     else {
         intervalId = requestAnimationFrame(animation)
@@ -463,36 +465,23 @@ function canvasMovement() {
 }
 
 //Board score function
-function checkHighScore() {
-    let highScores = JSON.parse(highScoreString);
-    let lowestScore = highScores[N_ofHighScore - 1]?.score ?? 0;
 
-    if (score > lowestScore) {
-        saveHighScore()
-        showHighScore()
-    }
-}
+function getHighScore(player, score) {
+    
+    let newScore = {name: player, score: score};
+    let highScoreString = localStorage.getItem("highScores") || '[]';
+    let highScores = [...JSON.parse(highScoreString), newScore];
 
-function saveHighScore() {
-    let name = prompt("Well done you entered the highScore board ! Enter name:");
-    let newScore = {
-        score,
-        name
-    };
-
-    highScores.push(newScore);
     highScores.sort((a, b) => b.score - a.score);
-    highScores.splice(N_ofHighScore);
+    highScores.splice(5);
+
     localStorage.setItem("highScores", JSON.stringify(highScores));
-}
 
-function showHighScore() {
-    let highScores = JSON.parse(localStorage.getItem("highScores")) || [];
-    let highScoreList = document.getElementById("highScoresList");
-
-    highScoreList.innerHTML = highScores
-        .map((newScore) => `<li class="high-score>${newScore.score} - ${newScore.name}</li>`)
-        .join('');
+    document.querySelector('.score1').innerText = `${highScores[0].name} : ${highScores[0].score}`;
+    document.querySelector('.score2').innerText = `${highScores[1].name} : ${highScores[1].score}`;
+    document.querySelector('.score3').innerText = `${highScores[2].name} : ${highScores[2].score}`;
+    document.querySelector('.score4').innerText = `${highScores[3].name} : ${highScores[3].score}`;
+    document.querySelector('.score5').innerText = `${highScores[4].name} : ${highScores[4].score}`;
 }
 
 //Music
@@ -552,6 +541,6 @@ window.addEventListener('load', () => {
     restartBtn.style.display = 'none';
     gameOverScreen.style.display = 'none';
     marioAudio.style.display = 'none'
-    //musicSplash.play()
+    musicSplash.play()
 
 })
