@@ -32,7 +32,7 @@ let audioOn = new Image()
 audioOn.src = './Images/audioOn.png'
 
 let marioPlaylist = ['./music/mario-odyssey.mp3', './music/remix-super-mario-sunshine.mp3', './music/super-mario-bros-2.mp3',
- './music/super-mario-world-athletic.mp3']
+    './music/super-mario-world-athletic.mp3']
 
 let musicSplash = new Audio('./music/zelda-theme.mp3')
 let musicOver = new Audio('./music/super-smash-bros.mp3')
@@ -66,45 +66,46 @@ let bush = new Bush()
 //Variable Call 
 
 let N_ofHighScore = 5;
-let highScr = 'highScores';
-let highScoreString = localStorage.getItem(highScr);
+let highScoreString = localStorage.getItem("highScores");
+//let mostRecentScore = localStorage.getItem('mostRecentScore')
 
+let onPlateform = false;
 let score = 0
 let intervalId = 0;
 let isGameOver = false;
 let controllerBall = {
-    left:false,
-    right:false,
-    up:false,
+    left: false,
+    right: false,
+    up: false,
 
-    keyListener:function(event) {
+    keyListener: function (event) {
 
-        let key_state = (event.type == "keydown")?true:false;
-    
-        switch(event.keyCode) {
-    
-          case 37:// left key
-            controllerBall.left = key_state;
-          break;
-          case 38:// up key
-            controllerBall.up = key_state;
-          break;
-          case 39:// right key
-            controllerBall.right = key_state;
-          break;
-    
+        let key_state = (event.type == "keydown") ? true : false;
+
+        switch (event.keyCode) {
+
+            case 37:// left key
+                controllerBall.left = key_state;
+                break;
+            case 38:// up key
+                controllerBall.up = key_state;
+                break;
+            case 39:// right key
+                controllerBall.right = key_state;
+                break;
+
         }
-    
+
     }
 };
 
-function tutorial(){
+function tutorial() {
     canvas.style.display = 'block';
     splashScreen.style.display = 'none';
     startBtn.style.display = 'none';
     marioAudio.style.display = 'block'
     musicSplash.pause()
-    
+
     imageDraw()
     ctx.drawImage(tuto, 425, 50)
     ctx.drawImage(tuto, 335, 200)
@@ -121,25 +122,25 @@ function tutorial(){
     let toggle = false;
     let toggle1 = false;
     document.addEventListener('keydown', (event) => {
-       
+
         if (event.code == 'ArrowUp' || event.code == 'ArrowLeft' || event.code == 'ArrowRight')
             if (!toggle && !toggle1) {
                 start()
                 toggle1 = true;
             }
     })
-    
+
 }
 
-function start(){
+function start() {
 
-    handPan.play()
-    
+    //handPan.play()
+
     animation()
 
 }
 
-function restart(){
+function restart() {
     isGameOver = false;
     canvas.style.display = 'block';
     restartBtn.style.display = 'none';
@@ -147,7 +148,7 @@ function restart(){
     score = 0;
     musicOver.pause()
 
-// class reset
+    // class reset
     tile = new Tile()
     cloudImage = new Cloud()
     lightPerson = new Light()
@@ -160,7 +161,7 @@ function restart(){
     handPan = new Audio('./music/a-fast-handpan.mp3')
     mario = new Audio(marioPlaylist[Math.floor(Math.random() * marioPlaylist.length)])
 
-// music reset
+    // music reset
     handPan.playbackRate = 1.2;
     mario.playbackRate = 1.2;
     musicSplash.volume = 0.1;
@@ -176,20 +177,20 @@ function restart(){
 
 }
 
-function animation(){
-    
-    
+function animation() {
+
+
     movement()
     collision()
     imageDraw()
     canvasMovement()
 
-// addEventListener for controller
+    // addEventListener for controller
 
     window.addEventListener("keydown", controllerBall.keyListener);
     window.addEventListener("keyup", controllerBall.keyListener);
-    
-// game Over 
+
+    // game Over 
 
     if (isGameOver) {
         cancelAnimationFrame(intervalId)
@@ -201,6 +202,7 @@ function animation(){
         musicOver.play()
         handPan.pause()
         mario.pause()
+        checkHighScore()
     }
     else {
         intervalId = requestAnimationFrame(animation)
@@ -208,7 +210,7 @@ function animation(){
 
 }
 
-function imageDraw(){
+function imageDraw() {
 
     ctx.drawImage(bg, 0, 0)
     treeBg.drawTree()
@@ -222,133 +224,210 @@ function imageDraw(){
 
 
 
-    
-//score text
+
+    //score text
 
     ctx.font = "20px Times"
     ctx.fillText(`Score is ${score}`, canvas.width - 200, 50)
-    
+
 }
 
-function collision(){ 
+function collision() {
     lightPerson.collision()
+    if (lightPerson.y >= 380) {
+        lightPerson.y = 380
+        lightPerson.jump = false
+        onPlateform = false;
+    }
+    if (lightPerson.x < 0) {
+        lightPerson.x = 0
+    }
+    // Collision with the columns
 
-// Collision with the columns
+    for (let i = 0; i < columnBlock.column.length; i++) {
 
-    for (let i = 0; i < columnBlock.column.length ; i++) {
+        //collision left side
+        if (lightPerson.x + light.width >= columnBlock.column[i].x + 2 && lightPerson.y + light.height >= columnBlock.column[i].y + 10 &&
+            lightPerson.x + light.width <= columnBlock.column[i].x + column.width / 2 && lightPerson.y <= columnBlock.column[i].y + column.height - 20) {
 
-    //collision left side
-        if (lightPerson.x + light.width >= columnBlock.column[i].x && lightPerson.y + light.height >= columnBlock.column[i].y + 10 &&
-            lightPerson.x < columnBlock.column[i].x + column.width/2 - 10) {
+            console.log("left")
+            lightPerson.x = columnBlock.column[i].x - light.width
+            lightPerson.jump = true
+            lightPerson.xVelocity = 0
+        }
 
-        lightPerson.x = columnBlock.column[i].x - light.width
-       
-        }   
-
-    //collision right side
+        //collision right side
         if (lightPerson.x >= columnBlock.column[i].x && lightPerson.y + light.height >= columnBlock.column[i].y + 10 &&
-            lightPerson.x <= columnBlock.column[i].x + column.width) {
-   
-           lightPerson.x = columnBlock.column[i].x + column.width
-   
-           }
+            lightPerson.x <= columnBlock.column[i].x + column.width - 2 && lightPerson.y <= columnBlock.column[i].y + column.height - 20) {
 
-    //collision top side
-        if (lightPerson.y + light.height > columnBlock.column[i].y && lightPerson.y + light.height < columnBlock.column[i].y + 10 && lightPerson.x + light.width <= columnBlock.column[i].x + column.width + 15 &&
-         lightPerson.x >= columnBlock.column[i].x - 15) {
+            lightPerson.x = columnBlock.column[i].x + column.width
+            lightPerson.jump = true
+            lightPerson.xVelocity = 0
+        }
 
+        //collision top side
+        if (lightPerson.y + light.height >= columnBlock.column[i].y && lightPerson.y + light.height <= columnBlock.column[i].y + 10 && lightPerson.x + light.width <= columnBlock.column[i].x + column.width + 15 &&
+            lightPerson.x >= columnBlock.column[i].x - 15) {
+
+            onPlateform = true;
             lightPerson.y = columnBlock.column[i].y - light.height
+            console.log("up")
             lightPerson.yVelocity = 0
             //lightPerson.xVelocity = 0
             lightPerson.jump = false
 
         }
 
-//score point
-        if (columnBlock.column[i].x + column.width <= 0) {
-            score += 1
-        }
-    }
-
-    // collision right side
-    if (lightPerson.x >= columnBlock.column1.x && lightPerson.y + light.height >= columnBlock.column1.y + 10 &&
-        lightPerson.x <= columnBlock.column1.x + column.width && lightPerson.y <= columnBlock.column1.y + column.height - 20) {
-            console.log("hello left")
-       lightPerson.x = columnBlock.column1.x + column.width
-       
-    }   
-
-    // collision left side
-    if (lightPerson.x + light.width >= columnBlock.column1.x && lightPerson.y + light.height >= columnBlock.column1.y + 10 &&
-        lightPerson.x < columnBlock.column1.x + column.width/2 - 10 && lightPerson.y <= columnBlock.column1.y + column.height - 20 ) {
-            console.log("hello right")
-       lightPerson.x = columnBlock.column1.x - light.width
-       
-    }   
-    // collision up
-    if (lightPerson.y + light.height >= columnBlock.column1.y && lightPerson.x + light.width <= columnBlock.column1.x + column.width + 10 &&
-        lightPerson.x >= columnBlock.column1.x - 20 && lightPerson.y + light.height <= columnBlock.column1.y + 20) {
-
-            
-           lightPerson.y = columnBlock.column1.y - light.height
-           lightPerson.yVelocity = 0
-           //lightPerson.xVelocity = 0
-           lightPerson.jump = false
-           
-     }
-
-    // collision bottom
-    if (lightPerson.y <= columnBlock.column1.y + column.height && lightPerson.x + light.width <= columnBlock.column1.x + column.width + 10 &&
-        lightPerson.x >= columnBlock.column1.x - 20 && lightPerson.y + light.height >= columnBlock.column1.y + column.height - 20) {
+        // collision bottom
+        if (lightPerson.y <= columnBlock.column[i].y + column.height && lightPerson.x + light.width <= columnBlock.column[i].x + column.width + 10 &&
+            lightPerson.x >= columnBlock.column[i].x - 20 && lightPerson.y + light.height >= columnBlock.column[i].y + column.height - 20) {
             console.log("hello bottom")
-            lightPerson.y = columnBlock.column1.y + column.height
+            lightPerson.y = columnBlock.column[i].y + column.height
             lightPerson.yVelocity += 10;
             lightPerson.jump = true
         }
 
-// score point
-    if (columnBlock.column1.x + column.width <= 0) {
-           score += 1
+        //score point
+        if (columnBlock.column[i].x + column.width <= 0) {
+            score += 1
+        }
     }
+    if (columnBlock.loop > 100) {
+        for (let j = 0; j < columnBlock.column1.length; j++) {
+            // collision right side
+            if (lightPerson.x >= columnBlock.column1[j].x && lightPerson.y + light.height >= columnBlock.column1[j].y + 10 &&
+                lightPerson.x <= columnBlock.column1[j].x + column.width - 2 && lightPerson.y <= columnBlock.column1[j].y + column.height - 20) {
 
-// collision ball with canvas right side  
+                lightPerson.x = columnBlock.column1[j].x + column.width
+                lightPerson.jump = true
+                lightPerson.xVelocity = 0
+
+            }
+
+            // collision left side
+            if (lightPerson.x + light.width >= columnBlock.column1[j].x && lightPerson.y + light.height >= columnBlock.column1[j].y + 10 &&
+                lightPerson.x < columnBlock.column1[j].x + column.width / 2 - 10 && lightPerson.y <= columnBlock.column1[j].y + column.height - 20) {
+
+                lightPerson.x = columnBlock.column1[j].x - light.width
+                lightPerson.jump = true
+                lightPerson.xVelocity = 0
+
+            }
+            // collision up
+            if (lightPerson.y + light.height >= columnBlock.column1[j].y && lightPerson.x + light.width <= columnBlock.column1[j].x + column.width + 10 &&
+                lightPerson.x >= columnBlock.column1[j].x - 20 && lightPerson.y + light.height <= columnBlock.column1[j].y + 20) {
+
+                onPlateform = true;
+                lightPerson.y = columnBlock.column1[j].y - light.height
+
+                lightPerson.yVelocity = 0
+                //lightPerson.xVelocity = 0
+                lightPerson.jump = false;
+
+            }
+
+            // collision bottom
+            if (lightPerson.y <= columnBlock.column1[j].y + column.height && lightPerson.x + light.width <= columnBlock.column1[j].x + column.width + 10 &&
+                lightPerson.x >= columnBlock.column1[j].x - 20 && lightPerson.y + light.height >= columnBlock.column1[j].y + column.height - 20) {
+                console.log("hello bottom")
+                lightPerson.y = columnBlock.column1[j].y + column.height
+                lightPerson.yVelocity += 10;
+                lightPerson.jump = true
+            }
+
+            // score point
+            if (columnBlock.column1[j].x + column.width <= 0) {
+                score += 1
+            }
+        }
+    }
+    // collision plateform
+    if (columnBlock.loop > 200) {
+        for (let k = 0; k < columnBlock.plateform.length; k++) {
+            // collision right side
+            if (lightPerson.x >= columnBlock.plateform[k].x && lightPerson.y + light.height >= columnBlock.plateform[k].y + 10 &&
+                lightPerson.x <= columnBlock.plateform[k].x + bridge.width - 2 && lightPerson.y <= columnBlock.plateform[k].y + bridge.height - 20) {
+
+                lightPerson.x = columnBlock.plateform[k].x + bridge.width
+                lightPerson.jump = true
+                lightPerson.xVelocity = 0
+            }
+
+            // collision left side
+            if (lightPerson.x + light.width >= columnBlock.plateform[k].x + 2 && lightPerson.y + light.height >= columnBlock.plateform[k].y + 10 &&
+                lightPerson.x < columnBlock.plateform[k].x + bridge.width / 2 - 10 && lightPerson.y <= columnBlock.plateform[k].y + bridge.height - 20) {
+
+                lightPerson.x = columnBlock.plateform[k].x - light.width
+                lightPerson.jump = true
+                lightPerson.xVelocity = 0
+            }
+            // collision top
+            if (lightPerson.y + light.height >= columnBlock.plateform[k].y && lightPerson.x + light.width <= columnBlock.plateform[k].x + bridge.width + 10 &&
+                lightPerson.x >= columnBlock.plateform[k].x - 20 && lightPerson.y + light.height <= columnBlock.plateform[k].y + 20) {
+
+                onPlateform = true;
+                lightPerson.y = columnBlock.plateform[k].y - light.height
+
+                lightPerson.yVelocity = 0
+                //lightPerson.xVelocity = 0
+                lightPerson.jump = false
+
+            }
+
+            // collision bottom
+            if (lightPerson.y <= columnBlock.plateform[k].y + bridge.height && lightPerson.x + light.width <= columnBlock.plateform[k].x + bridge.width + 10 &&
+                lightPerson.x >= columnBlock.plateform[k].x - 20 && lightPerson.y + light.height >= columnBlock.plateform[k].y + bridge.height - 10) {
+
+                lightPerson.y = columnBlock.plateform[k].y + bridge.height
+                lightPerson.yVelocity += 10;
+                lightPerson.jump = true
+            }
+
+        }
+    }
+    // collision ball with canvas right side  
     if (lightPerson.x >= 610) {
         lightPerson.x = 610
-    }   
+    }
 
-// collision ghost
+    // collision ghost
     if (lightPerson.x <= ghostPerson.x + ghost.width - light.width) {
         isGameOver = true;
     }
-        
+
 
 
 }
 
+
 //Movement function
-function movement(){
+function movement() {
 
-    
 
-     if (controllerBall.up && lightPerson.jump == false) {
-        
-        lightPerson.yVelocity -= 50;
-        lightPerson.jump = true;
-        
-        
+    if (controllerBall.up && lightPerson.jump == false) {
+        if (onPlateform == true) {
+            lightPerson.yVelocity -= 30;
+            lightPerson.jump = true;
+        }
+        else {
+            lightPerson.yVelocity -= 40;
+            lightPerson.jump = true;
+        }
+
+
     }
 
     if (controllerBall.left) {
         lightPerson.xVelocity -= 0.5;
-        
+
     }
 
     if (controllerBall.right) {
         lightPerson.xVelocity += 0.5;
-        
+
     }
-    
-    lightPerson.yVelocity += 1.5; //gravity
+
+    lightPerson.yVelocity += 1.2; //gravity
     lightPerson.x += lightPerson.xVelocity;
     lightPerson.y += lightPerson.yVelocity;
     lightPerson.xVelocity *= 0.9; //friction
@@ -356,12 +435,17 @@ function movement(){
 
 }
 
-function canvasMovement(){
+function canvasMovement() {
     if (lightPerson.x >= 610 && controllerBall.right) {
         for (let i = 0; i < columnBlock.column.length; i++) {
             columnBlock.column[i].x += columnBlock.speed
         }
-        columnBlock.column1.x += columnBlock.speed
+        for (let j = 0; j < columnBlock.column1.length; j++) {
+            columnBlock.column1[j].x += columnBlock.speed
+        }
+        for (let k = 0; k < columnBlock.plateform.length; k++) {
+            columnBlock.plateform[k].x += columnBlock.speed
+        }
         treeBg.tree.x += treeBg.speed
         treeBg.tree1.x += treeBg.speed
         treeBg.tree2.x += treeBg.speed
@@ -372,12 +456,13 @@ function canvasMovement(){
         bush.bush2.x += bush.speed
         bush.bush3.x += bush.speed
         //tile.x += tile.speed;
-        ghostPerson.x -= 6.5
+        //ghostPerson.x -= 6.5
+
     }
 }
 
 //Board score function
-function checkHighScore(score){
+function checkHighScore() {
     let highScores = JSON.parse(highScoreString);
     let lowestScore = highScores[N_ofHighScore - 1]?.score ?? 0;
 
@@ -387,28 +472,31 @@ function checkHighScore(score){
     }
 }
 
-function saveHighScore(score, highScores){
+function saveHighScore() {
     let name = prompt("Well done you entered the highScore board ! Enter name:");
-    let newScore = { score, name };
+    let newScore = {
+        score,
+        name
+    };
 
     highScores.push(newScore);
-    highScores.sort((a, b) => b.score - a.score);
+    highScores.sort((a, b) => b.score - a.score);
     highScores.splice(N_ofHighScore);
-    localStorage.setItem(highScr, JSON.stringify(highScores));
+    localStorage.setItem("highScores", JSON.stringify(highScores));
 }
 
-function showHighScore(){
-    let highScores = JSON.parse(localStorage.getItem(highScr)) || [];
-    let highScoreList = document.getElementById(highScr);
+function showHighScore() {
+    let highScores = JSON.parse(localStorage.getItem("highScores")) || [];
+    let highScoreList = document.getElementById("highScoresList");
 
     highScoreList.innerHTML = highScores
-    .map((score) => `<li>${score.score} - ${score.name}`)
-    .join('');
+        .map((newScore) => `<li class="high-score>${newScore.score} - ${newScore.name}</li>`)
+        .join('');
 }
 
 //Music
-function playMute(){
-    if(musicSplash.muted) {
+function playMute() {
+    if (musicSplash.muted) {
         musicSplash.muted = false;
         musicOver.muted = false;
         handPan.muted = false;
@@ -432,7 +520,7 @@ startBtn.addEventListener('click', () => {
 
 restartBtn.addEventListener('click', () => {
     restart()
-    
+
 })
 
 playmutebtn.addEventListener('click', () => {
@@ -451,7 +539,7 @@ document.addEventListener("keydown", (event) => {
             mario.pause();
             handPan.play();
             toggle = true;
-            
+
         }
 
     }
@@ -463,8 +551,6 @@ window.addEventListener('load', () => {
     restartBtn.style.display = 'none';
     gameOverScreen.style.display = 'none';
     marioAudio.style.display = 'none'
-    musicSplash.play()
+    //musicSplash.play()
+
 })
-
-
-

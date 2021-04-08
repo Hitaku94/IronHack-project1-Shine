@@ -10,27 +10,30 @@
     <button id="playmutebtn"></button>
     <div id="marioAudio">If you want some mario vibe press "SPACE"</div> 
     <div id="splashScreen">
-    
-    <h1>Shine</h1>
-    
-    <h2>Escape the darkness that chases you.<br> Let the light shine</h2>
+        <h1>Shine</h1>
+        <h2>Escape the darkness that chases you.<br> Let the light shine</h2>
+        <button id="start">Start game</button>
     </div>
-    <button id="start">Start game</button>
+    
     <canvas id="myCanvas" width="1000" height="500"></canvas>
 
     <div id="gameOverScreen">
-    <h2 id="finish">you got caught by the darkness</h2>
+        <div>
+            <h2 id="finish">you got caught by the darkness</h2>
     
-    <p id="over">Your <span id="score">score</span> is :
-        <br>
-        <span id="result"></span>
-        </p>
+            <p id="over">Your <span id="score">score</span> is :
+            <br>
+            <span id="result"></span>
+            </p>
+            <button id="restart">Restart Game</button>
+        </div>
+            <div id="highScores">
+                <h3 id="finalScore">High score</h3>
+                <ol id=”highScoresList”></ol>
+        </div>   
     </div>
-    <div>
-        <h3>High score</h3>
-        <ol id=”highScores”></ol>
-    </div>
-    <button id="restart">Restart Game</button>
+
+    
 
     <script src="javascript/cloud.js"></script>
     <script src="javascript/Tile.js"></script>

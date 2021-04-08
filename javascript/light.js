@@ -16,13 +16,7 @@ class Light {
         ctx.drawImage(light, this.x, this.y)
     }
     collision() {
-        if (this.y >= 380) {
-            this.y = 380
-            this.jump = false
-        }
-        if (this.x < 0) {
-            this.x = 0
-        }
+        
         
 
 
