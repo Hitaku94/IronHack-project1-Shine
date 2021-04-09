@@ -10,8 +10,6 @@ let playmutebtn = document.querySelector('#playmutebtn')
 let splashScreen = document.querySelector('#splashScreen');
 let gameOverScreen = document.querySelector('#gameOverScreen');
 
-console.log(userName.value)
-
 let bg = new Image();
 bg.src = './Images/bg-forest.png';
 let tuto = new Image();
@@ -54,6 +52,7 @@ mario.loop = true;
 
 // object from classes
 
+let superMan = new Superman()
 let tile = new Tile()
 let cloudImage = new Cloud()
 let lightPerson = new Light()
@@ -67,11 +66,13 @@ let bush = new Bush()
 
 
 
-
-
+let powerC = false;
+let powerCtime = 0;
+let powerD = false;
+let powerDtime = 0;
 let onPlateform = false;
 let score = 0
-let intervalId = 0;
+//let intervalId = 0;
 let isGameOver = false;
 let controllerBall = {
     left: false,
@@ -110,10 +111,23 @@ function tutorial() {
     ctx.drawImage(tuto, 425, 50)
     ctx.drawImage(tuto, 335, 200)
     ctx.drawImage(tuto, 515, 200)
+    ctx.drawImage(tuto, 50, 25)
+    ctx.drawImage(tuto, 200, 25)
     ctx.drawImage(iconUp, 475, 110)
     ctx.drawImage(iconLeft, 385, 260)
     ctx.drawImage(iconRight, 570, 260)
 
+    ctx.font = "10px Times"
+    ctx.fillText("(marvel)", 310, 105)
+    ctx.font = "bold 40px Times"
+    ctx.fillText("D", 110, 80)
+    ctx.fillText("C", 260, 80)
+    ctx.font = "20px Times"
+    ctx.fillText("Jump higher", 75, 115)
+    ctx.fillText("Repulse", 240, 105)
+    ctx.fillText("the darkness", 228, 125)
+    ctx.fillText("They need time to charge", 100, 200)
+    ctx.fillText("Use it wisely ", 140, 225)
     ctx.font = "bold 25px Times"
     ctx.fillText("Jump", 470, 100)
     ctx.fillText("Left", 390, 250)
@@ -180,7 +194,7 @@ function restart() {
 
 function animation() {
     
-
+    power()
     movement()
     collision()
     imageDraw()
@@ -223,8 +237,7 @@ function imageDraw() {
     cloudImage.drawCloud()
     lightPerson.img()
     ghostPerson.img()
-
-
+    superMan.image()
 
 
     //score text
@@ -232,8 +245,16 @@ function imageDraw() {
     ctx.font = "20px Times"
     ctx.fillText(`Score is ${score}`, canvas.width - 200, 50)
 
+    if (powerDtime >= 5) {
+        ctx.font = "20px Times"
+        ctx.fillText('"D" is ready!', 50, 50)
+    }
+     if (powerCtime >= 12) {
+        ctx.font = "20px Times"
+        ctx.fillText('"C" is ready!', 50, 75)
+    
+    }
 }
-
 function collision() {
     lightPerson.collision()
     if (lightPerson.y >= 380) {
@@ -290,7 +311,7 @@ function collision() {
         }
 
     }
-    if (columnBlock.loop > 50) {
+    if (columnBlock.loop > 30) {
         for (let j = 0; j < columnBlock.column1.length; j++) {
             // collision right side
             if (lightPerson.x >= columnBlock.column1[j].x && lightPerson.y + light.height >= columnBlock.column1[j].y + 10 &&
@@ -336,7 +357,7 @@ function collision() {
         }
     }
     // collision plateform
-    if (columnBlock.loop > 100) {
+    if (columnBlock.loop > 60) {
         for (let k = 0; k < columnBlock.plateform.length; k++) {
             // collision right side
             if (lightPerson.x >= columnBlock.plateform[k].x && lightPerson.y + light.height >= columnBlock.plateform[k].y + 10 &&
@@ -426,6 +447,28 @@ function movement() {
     lightPerson.xVelocity *= 0.9; //friction
     lightPerson.yVelocity *= 0.9; //friction 
 
+    ghostPerson.x += ghostPerson.xVelocity
+    ghostPerson.xVelocity *= 0.9; //friction
+
+    superMan.x += superMan.xVelocity
+    superMan.y += superMan.yVelocity
+    superMan.xVelocity *= 0.9; //friction
+    superMan.yVelocity *= 0.9; //friction
+
+
+    //Power movement
+    if(ghostPerson.x == -30) {
+        ghostPerson.xVelocity = 0
+    }
+
+    if (superMan.y > 600) {
+        superMan.xVelocity = 0
+        superMan.yVelocity = 0
+        superMan.image()
+        superMan.x = 900
+        superMan.y = -60
+    }
+
 }
 
 function canvasMovement() {
@@ -449,7 +492,7 @@ function canvasMovement() {
         bush.bush2.x += bush.speed
         bush.bush3.x += bush.speed
         //tile.x += tile.speed;
-        ghostPerson.x -= 7
+        ghostPerson.x -= 6.5
 
     }
 }
@@ -490,6 +533,28 @@ function playMute() {
         playmutebtn.style.background = "url(Images/audioOff.png) no-repeat";
     }
 }
+
+function power() {
+    
+    if (score%100 == 0) {
+        powerDtime++
+   }
+   
+   if (powerDtime >= 5) {
+       powerD = false;
+   }
+
+   if (score%100 == 0) {
+    powerCtime++
+    }
+
+    if (powerCtime >= 12) {
+   powerC = false;
+    }
+
+
+
+}
 // event listener
 
 
@@ -507,8 +572,15 @@ playmutebtn.addEventListener('click', () => {
     playMute()
 })
 
+
+
+
+
 document.addEventListener("keydown", (event) => {
     let toggle = false;
+    
+
+
     if (event.code == 'Space') {
         if (!handPan.paused && !toggle) {
             handPan.pause();
@@ -522,6 +594,36 @@ document.addEventListener("keydown", (event) => {
 
         }
 
+    }
+
+    if (event.code == 'KeyD' && !lightPerson.jump && !powerD) {
+        if (onPlateform == true) {
+            lightPerson.yVelocity -= 50;
+            lightPerson.jump = true;
+            powerD = true;
+            powerDtime = 0
+           
+        }
+        else {
+            lightPerson.yVelocity -= 60;
+            lightPerson.jump = true;
+            powerD = true;
+            powerDtime = 0
+           
+        }
+
+    }
+
+    if (event.code == 'KeyC' && !powerC) {
+        superMan.xVelocity -= 80
+        superMan.yVelocity += 70
+        powerC = true;
+        powerCtime = 0
+        ghostPerson.xVelocity -= 80
+
+        
+        
+        
     }
 })
 
