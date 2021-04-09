@@ -1,6 +1,7 @@
+/*------------- general css -------------*/
+
 html {
     height: 100%;
-
 }
 
 #myCanvas {
@@ -16,10 +17,9 @@ html {
 body {
     font-family : Times, serif;
     background: radial-gradient(circle at 100%, #DFEEFF, #1B2735 80%, #090A0F);
-
-    
-    
 }
+
+/*--------------- Sound -------------*/
 
 #playmutebtn {
     background:url(/Images/audioOn.png) no-repeat;
@@ -32,16 +32,15 @@ body {
     text-align: center;
     margin: auto;
     align-items: center;
-
-    
 }
 
 #marioAudio {
     display : flex;
     text-align: center;
     justify-content: center;
-
 }
+
+/*------------- General css Button -------------*/
 
 button {
     border-color: #DFEEFF;
@@ -55,13 +54,55 @@ button {
     font-family : Times, serif;
     outline: none;
     cursor: pointer;
-
-    
 }
 button:hover {
     background-color : #DFEEFF;
+}
 
+/*------------- SplashScreen -------------*/
 
+#splashScreen {
+    text-align: center;
+}
+
+h1 {
+    font-size: 120px;
+    letter-spacing: 20px;
+    background: -webkit-linear-gradient(#5E6C79, #090A0F, #5E6C79);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+
+h2 {
+    font-weight: normal;
+    font-size : 30px;
+    color: #090A0F;
+}
+
+#userName {
+    background-color: #DFEEFF;
+  border-radius : 10px;
+  border: none;
+  border-style:none;
+  box-shadow: #5E6C79;
+  height: 35px;
+  width: 175px;
+  outline: none;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+input::placeholder {
+    text-align: center;
+    color: #5E6C79;
+    font-size: 17px;
+}
+
+input[type="text"] {
+    font-size:25px;
 }
 
 #start {
@@ -69,32 +110,24 @@ button:hover {
     height : 50px;
 }
 
-#restart {
-    width : 200px;
-    height : 50px;
-  
+/*------------- GameOver Screen -------------*/
+
+#gameOverScreen {
+    padding-left: 400px;
+    padding-right: 400px;
 }
 
-#splashScreen {
+#finish {
+    font-size : 80px;
     text-align: center;
-}
-
-h1 {
-
-    font-size: 120px;
-    letter-spacing: 20px;
-    background: -webkit-linear-gradient(#5E6C79, #090A0F, #5E6C79);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-top: 20px;
-}
-
-h2 {
-
-    font-weight: normal;
-    font-size : 30px;
     color: #090A0F;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
 
+#over{
+    font-size : 30px;
+    margin-bottom: 50px;
 }
 
 p {
@@ -103,45 +136,41 @@ p {
     color: #090A0F;
 }
 
-#finish {
-    font-size : 80px;
-    text-align: center;
-    color: #090A0F;
-}
-
-#gameOverScreen {
-    padding-left: 400px;
-    padding-right: 400px;
-}
-
-#over{
-    font-size : 30px;
-}
-
 span{
     font-size : 50px;
-    
 }
 
 #score{
     color:#DFEEFF;
+
 }
 
-#name {
-    
-    background-color: #DFEEFF;
-  border-radius : 10px;
-  border: none;
-  border-style:none;
-  box-shadow: #5E6C79;
-  height: 25px;
-  width: 200px;
-  outline: none;
-
+#restart {
+    width : 200px;
+    height : 50px;
   
 }
 
-input::placeholder {
+/*------------- highscore -------------*/
+
+h3 {
+    font-size: 30px;
+    margin: 0;
+    padding: none;
+}
+
+.highScore {
+    position:absolute;
+    top: 50%;
+    left: 70%;
     text-align: center;
-    color: #5E6C79;
+    border: black;
+    border-style:solid;
+    padding: 10px 20px 10px 20px;
+}
+
+
+
+li {
+    font-size: 25px;
 }

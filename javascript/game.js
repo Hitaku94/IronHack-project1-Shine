@@ -252,10 +252,10 @@ function collision() {
         if (lightPerson.x + light.width >= columnBlock.column[i].x + 2 && lightPerson.y + light.height >= columnBlock.column[i].y + 10 &&
             lightPerson.x + light.width <= columnBlock.column[i].x + column.width / 2 && lightPerson.y <= columnBlock.column[i].y + column.height - 20) {
 
-            console.log("left")
             lightPerson.x = columnBlock.column[i].x - light.width
             lightPerson.jump = true
             lightPerson.xVelocity = 0
+
         }
 
         //collision right side
@@ -265,6 +265,7 @@ function collision() {
             lightPerson.x = columnBlock.column[i].x + column.width
             lightPerson.jump = true
             lightPerson.xVelocity = 0
+
         }
 
         //collision top side
@@ -272,11 +273,10 @@ function collision() {
             lightPerson.x >= columnBlock.column[i].x - 15) {
 
             onPlateform = true;
-            lightPerson.y = columnBlock.column[i].y - light.height
-           
-            lightPerson.yVelocity = 0
-            //lightPerson.xVelocity = 0
-            lightPerson.jump = false
+            lightPerson.jump = false;
+            lightPerson.y = columnBlock.column[i].y - light.height;
+            lightPerson.yVelocity = 0;
+            
 
         }
 
@@ -289,10 +289,6 @@ function collision() {
             lightPerson.jump = true
         }
 
-        //score point
-        /*if (columnBlock.column[i].x + column.width <= 0) {
-            score += 1
-        }*/
     }
     if (columnBlock.loop > 50) {
         for (let j = 0; j < columnBlock.column1.length; j++) {
@@ -307,8 +303,8 @@ function collision() {
             }
 
             // collision left side
-            if (lightPerson.x + light.width >= columnBlock.column1[j].x && lightPerson.y + light.height >= columnBlock.column1[j].y + 10 &&
-                lightPerson.x < columnBlock.column1[j].x + column.width / 2 - 10 && lightPerson.y <= columnBlock.column1[j].y + column.height - 20) {
+            if (lightPerson.x + light.width >= columnBlock.column1[j].x + 2 && lightPerson.y + light.height >= columnBlock.column1[j].y + 10 &&
+                lightPerson.x + light.width <= columnBlock.column1[j].x + column.width/2 && lightPerson.y <= columnBlock.column1[j].y + column.height - 20) {
 
                 lightPerson.x = columnBlock.column1[j].x - light.width
                 lightPerson.jump = true
@@ -337,10 +333,6 @@ function collision() {
                 lightPerson.jump = true
             }
 
-            // score point
-            /*if (columnBlock.column1[j].x + column.width <= 0) {
-                score += 1
-            }*/
         }
     }
     // collision plateform
@@ -357,7 +349,7 @@ function collision() {
 
             // collision left side
             if (lightPerson.x + light.width >= columnBlock.plateform[k].x + 2 && lightPerson.y + light.height >= columnBlock.plateform[k].y + 10 &&
-                lightPerson.x < columnBlock.plateform[k].x + bridge.width / 2 - 10 && lightPerson.y <= columnBlock.plateform[k].y + bridge.height - 20) {
+                lightPerson.x < columnBlock.plateform[k].x + bridge.width / 2 && lightPerson.y <= columnBlock.plateform[k].y + bridge.height - 20) {
 
                 lightPerson.x = columnBlock.plateform[k].x - light.width
                 lightPerson.jump = true
@@ -397,8 +389,6 @@ function collision() {
     if (lightPerson.x <= ghostPerson.x + ghost.width - light.width) {
         isGameOver = true;
     }
-
-
 
 }
 
